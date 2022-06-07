@@ -1,50 +1,40 @@
-var input= document.querySelector("#textarea")
-var saveBtn= document.querySelector(".save-btn")
-var currentDay=document.querySelector("#currentDay")
-//var day= ["Sunday", "Monday","Tuesday","Wednesday", "Thursday","Friday","Saturday"]
-//document.getElementById('currentDay').innerHTML= day[""];
+var input = document.querySelector("#textarea")
+var saveBtn = $('.save-btn')
+var currentDay = document.querySelector("#currentDay")
 
-//const currentDate = moment().format('MM/DD/YYYY'); // get current date
-//document.getElementById("currentDay").textContent = currentDate;
-//const dayName = getDayName(dayIndex)
+const currentDate = moment().format('dddd, MMMM Do, YYYY '); // get current date
+document.getElementById("currentDay").textContent = currentDate;
+const hourDay = moment().hours()
+const hourBlock = $('textarea')
 
-var weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+hourBlock.each(function () {
+  var currentHour = $(this).attr('id')
+  if (hourDay > currentHour) {
+    $(this).addClass('past')
+  } else if (hourDay == currentHour) {
+    $(this).removeClass('past')
+    $(this).addClass('present')
+  } else {
+    $(this).removeClass('past')
+    $(this).removeClass('present')
+    $(this).addClass('future')
+  }
+})
 
-var d = new Date();
-let day = weekday[d.getDay()];
-console.log(weekday);
-$('#currentDay').html("Today is: " + day);
+saveBtn.on('click', function (event) {
+  event.preventDefault()
 
-//var today= new Date();
-//console.log(today);
+  var timeBlockId = $(this).attr('id')
+  var task = $(this).siblings('textarea').val()
+  localStorage.setItem(timeBlockId, task)
+  showTask()
+})
 
-var checkTime= function() {
-    var hour= $(".hour").text().trim();
-
-    var time= moment(hour, "LT");
-    console.log(time)
-
-    if (moment().isAfter(time)) {
-        $(".hour").addClass(".past");
-    } else if (moment().isBefore(time)) {
-        $(".hour").addClass(".future");
-    } else {
-        $(".hour").addClass(".present");
-    }
-}
-checkTime();
-console.log(checkTime);
-
-function setColor(element, color) {
-  element.style.backgroundColor = color;
+function showTask() {
+  for(var i = 9; i < 18; i++) {
+    var currentTask = localStorage.getItem(i)
+    $('#' + i).text(currentTask)
+  }
 }
 
-input.innerHTML= localStorage.getItem('value');
-
-saveBtn.onclick=function() {
-        localStorage.setItem('value', input.value)
-        localStorage.getItem('value')
-    
-    };
-
-
+showTask()
