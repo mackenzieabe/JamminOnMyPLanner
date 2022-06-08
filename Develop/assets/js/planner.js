@@ -28,7 +28,7 @@ hourBlock.each(function () {
 //save button function 
 saveBtn.on('click', function (event) {
   event.preventDefault()
-//the save button's sibling is the text area of the hour block. this saves the actual text area of the hour. 
+  //the save button's sibling is the text area of the hour block. this saves the actual text area of the hour. 
   var timeBlockId = $(this).attr('id')
   var task = $(this).siblings('textarea').val()
   localStorage.setItem(timeBlockId, task)
@@ -36,7 +36,7 @@ saveBtn.on('click', function (event) {
 })
 //the showTask function loops through each hour/save button 
 function showTask() {
-  for(var i = 9; i < 18; i++) {
+  for (var i = 9; i < 18; i++) {
     var currentTask = localStorage.getItem(i)
     $('#' + i).text(currentTask)
   }
